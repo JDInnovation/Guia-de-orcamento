@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora de Orçamento</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>
+        function calcularOrcamento() {
+            // Obter as características selecionadas pelo cliente
+            var caracteristica1 = document.querySelector('input[name="caracteristica1"]:checked');
+            var caracteristicasCheckboxes = document.getElementsByName('caracteristicas-checkbox');
+            var total = 0;
+
+            // Calcular o valor do orçamento com base nas características selecionadas
+            if (caracteristica1) {
+                total += parseFloat(caracteristica1.value);
+            }
+            for (var i = 0; i < caracteristicasCheckboxes.length; i++) {
+                if (caracteristicasCheckboxes[i].checked) {
+                    total += parseFloat(caracteristicasCheckboxes[i].value);
+                }
+            }
+
+            // Aplicar o imposto de 23%
+            var orcamentoFinal = total * 1.23;
+
+            // Obter as anotações do orçamento
+            var anotacoes = document.getElementById('anotacoes').value;
+
+            // Obter os dados do cliente
+            var nomeCliente = document.getElementById('nome').value;
+            var emailCliente = document.getElementById('email').value;
+            var contatoCliente = document.getElementById('contato').value;
+
+            // Exibir o valor do orçamento final, as anotações e os dados do cliente
+            var resultado = 'O valor do orçamento é: €' + orcamentoFinal.toFixed(2);
+            resultado += '<br>Anotações: ' + anotacoes;
+            resultado += '<br>Nome do cliente: ' + nomeCliente;
+            resultado += '<br>Email do cliente: ' + emailCliente;
+            resultado += '<br>Contato do cliente: ' + contatoCliente;
+
+            document.getElementById('resultado').innerHTML = resultado;
+        }
+        
+        function gerarRelatorio() {
+            // Obter as características selecionadas pelo cliente
+            var caracteristica1 = document.querySelector('input[name="caracteristica1"]:checked');
+            var caracteristicasCheckboxes = document.getElementsByName('caracteristicas-checkbox');
+            var total = 0;
+
+            // Calcular o valor do orçamento com base nas características selecionadas
+            if (caracteristica1) {
+                total += parseFloat(caracteristica1.value);
+            }
+            for (var i = 0; i < caracteristicasCheckboxes.length; i++) {
+                if (caracteristicasCheckboxes[i].checked) {
+                    total += parseFloat(caracteristicasCheckboxes[i].value);
+                }
+            }
+
+            // Aplicar o imposto de 23%
+            var orcamentoFinal = total * 1.23;
+            var orcamentoSemImposto = total;
+
+            // Obter as anotações do orçamento
+            var anotacoes = document.getElementById('anotacoes').value;
+
+            // Obter os dados do cliente
+            var nomeCliente = document.getElementById('nome').value;
+            var emailCliente = document.getElementById('email').value;
+            var contatoCliente = document.getElementById('contato').value;
+
+            // Criar o conteúdo do relatório
+            var relatorio = 'Relatório de Orçamento\n\n';
+            relatorio += 'Característica 1: ' + (caracteristica1 ? caracteristica1.nextSibling.textContent.trim() : '') + '\n';
+            relatorio += 'Características selecionadas: ';
+            for (var i = 0; i < caracteristicasCheckboxes.length; i++) {
+                if (caracteristicasCheckboxes[i].checked) {
+                    relatorio += caracteristicasCheckboxes[i].nextSibling.textContent.trim() + ', ';
+                }
+            }
+            relatorio = relatorio.slice(0, -2); // Remover a última vírgula e espaço
+            relatorio += '\n\n';
+            relatorio += 'Valor do Orçamento (com imposto): €' + orcamentoFinal.toFixed(2) + '\n';
+            relatorio += 'Valor do Orçamento (sem imposto): €' + orcamentoSemImposto.toFixed(2) + '\n\n';
+            relatorio += 'Anotações: ' + anotacoes + '\n\n';
+            relatorio += 'Nome do cliente: ' + nomeCliente + '\n';
+            relatorio += 'Email do cliente: ' + emailCliente + '\n';
+            relatorio += 'Contato do cliente: ' + contatoCliente;
+
+            // Criar um elemento de link para download
+            var linkDownload = document.createElement('a');
+            linkDownload.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(relatorio);
+            linkDownload.download = 'relatorio_orcamento.txt';
+            linkDownload.style.display = 'none';
+
+            // Adicionar o elemento de link à página e clicar nele para iniciar o download
+            document.body.appendChild(linkDownload);
+            linkDownload.click();
+            document.body.removeChild(linkDownload);
+
+            let button = document.getElementById("button");
+
+button.addEventListener('mousemove', (e) => {
+    x = e.offsetX;
+    y = e.offsetY;
+    button.style.setProperty('--mouse-x', x + "px");
+    button.style.setProperty('--mouse-y', y + "px");
+});
+        }
+    </script>
+</head>
+<body>
+    <div>
+    <h1>ORÇAMENTO LOJA ONLINE</h1>
+    
+    <!-- Característica 1 - Radio Buttons -->
+    <input type="radio" name="caracteristica1" value="95">5 a 10 produtos<br>
+    <input type="radio" name="caracteristica1" value="165">10 a 50 produtos<br>
+    <input type="radio" name="caracteristica1" value="285">50 a 100 produtos<br>
+    <input type="radio" name="caracteristica1" value="500">100 a 500 produtos<br>
+    
+    <!-- Características Checkbox -->
+    <input type="checkbox" name="caracteristicas-checkbox" value="245">Página inicial, coleções, políticas, contatos<br>
+    <input type="checkbox" name="caracteristicas-checkbox" value="75">Reduzir imagens, SEO e favicon<br>
+    <input type="checkbox" name="caracteristicas-checkbox" value="75">Login<br>
+    <input type="checkbox" name="caracteristicas-checkbox" value="50">Fluxo de e-mails<br>
+    <input type="checkbox" name="caracteristicas-checkbox" value="50">Métodos de Pagamento, integração com o Domínio<br>
+
+    <!-- Dados do cliente -->
+    <h3>Dados do Cliente:</h3>
+    <input type="text" id="nome" placeholder="Nome"><br>
+    <input type="email" id="email" placeholder="Email"><br>
+    <input type="text" id="contato" placeholder="Contato"><br>
+    
+        
+    <!-- Caixa de texto para anotações -->
+    <h3>Anotações:</h3>
+    <textarea id="anotacoes" rows="6" cols="50"></textarea>
+    <br>
+    <br>
+    
+    <button onclick="calcularOrcamento()">Gerar Orçamento</button>
+    <button onclick="gerarRelatorio()">Gerar Relatório</button>
+    <br><br>
+    <div id="resultado"></div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
